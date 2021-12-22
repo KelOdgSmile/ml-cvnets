@@ -127,7 +127,7 @@ class HollyHeadDetection(BaseImageDataset):
         # print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
         txt_dat = np.loadtxt(ann_path,skiprows=1)
-        print(txt_dat, txt_dat.shape)
+        # print(txt_dat, txt_dat.shape)
         if len(txt_dat.shape) <= 1:
             txt_dat = np.expand_dims(txt_dat, axis=0)
         # print(txt_dat, txt_dat.shape)
@@ -136,7 +136,7 @@ class HollyHeadDetection(BaseImageDataset):
         # print(labels, boxes)
         # print(txt_dat)
         # print(boxes[0, :].tolist()[0])
-        print(self._xywh2xyxy(boxes[0, :].tolist()))
+        # print(self._xywh2xyxy(boxes[0, :].tolist()))
         boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist()) for i in range(boxes.shape[0])],
                          np.float32).reshape((-1, 4))
 
@@ -149,7 +149,7 @@ class HollyHeadDetection(BaseImageDataset):
         return boxes, np.array(labels,np.int64)
 
     def _xywh2xyxy(self, box):
-        print(box)
+        # print(box)
         x1, y1, w, h = box
         return [x1, y1, x1 + w, y1 + h]
 
