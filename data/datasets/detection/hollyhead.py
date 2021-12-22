@@ -148,7 +148,7 @@ class HollyHeadDetection(BaseImageDataset):
     def _get_image(self, image_id):
         ann_file = self.imgs[image_id]
         print(ann_file)
-        ann_path = os.path.join(self.ann_dir, ann_file)
+        ann_path = os.path.join(self.img_dir, ann_file)
 
         image = self.read_image(ann_path)
         return image, ann_path
