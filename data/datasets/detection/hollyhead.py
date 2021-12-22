@@ -124,13 +124,17 @@ class HollyHeadDetection(BaseImageDataset):
 
     def _get_annotation(self, image_id):
         ann_file = self.imgs[image_id][:-4]+'.txt'
-        print(ann_file)
+        # print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
         txt_dat = np.loadtxt(ann_path,skiprows=1)
         if len(txt_dat.shape) >= 1:
             txt_dat = np.expand_dims(txt_dat, axis=0)
+        print(txt_dat)
         labels = txt_dat[:, 0]
         boxes = txt_dat[:, 1:]
+        print(txt_dat)
+        print(boxes[0, :].tolist())
+        print(self._xywh2xyxy(boxes[0, :].tolist()))
         boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist()) for i in range(boxes.shape[0])],
                          np.float32).reshape((-1, 4))
 
@@ -143,12 +147,13 @@ class HollyHeadDetection(BaseImageDataset):
         return boxes, np.array(labels)
 
     def _xywh2xyxy(self, box):
+        print(box)
         x1, y1, w, h = box
         return [x1, y1, x1 + w, y1 + h]
 
     def _get_image(self, image_id):
         ann_file = self.imgs[image_id]
-        print(ann_file)
+        # print(ann_file)
         ann_path = os.path.join(self.img_dir, ann_file)
 
         image = self.read_image(ann_path)
