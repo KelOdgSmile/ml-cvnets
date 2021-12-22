@@ -63,6 +63,9 @@ class SSDLoss(BaseCriteria):
         # predicted_locations :(batch_size, num_priors, 4)
         confidence, predicted_locations = prediction
 
+        print(confidence.shape, predicted_locations.shape)
+        print(target["box_labels"].shape, target["box_coordinates"].shape)
+
         gt_labels = target["box_labels"]
         gt_locations = target["box_coordinates"]
 
