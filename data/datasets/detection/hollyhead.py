@@ -146,7 +146,7 @@ class HollyHeadDetection(BaseImageDataset):
         #     boxes = np.array(self._xywh2xyxy(boxes.tolist()))
         # filter crowd annotations
 
-        return boxes, np.array(labels)
+        return boxes, np.array(labels,np.int64)
 
     def _xywh2xyxy(self, box):
         print(box)
