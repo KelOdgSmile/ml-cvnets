@@ -55,7 +55,7 @@ class HollyHeadDetection(BaseImageDataset):
         self.ann_dir = label_path
         self.ids = [i for i in range(len(self.img_dir))]
 
-        self.num_classes = 2
+        self.num_classes = 1
 
         setattr(opts, "model.detection.n_classes", self.num_classes)
 
