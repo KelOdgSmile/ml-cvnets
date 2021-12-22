@@ -37,8 +37,8 @@ optim:
 scheduler:
   name: "cosine"
   is_iteration_based: false
-  max_epochs: 10
-  warmup_iterations: 5
+  max_epochs: 200
+  warmup_iterations: 500
   warmup_init_lr: 0.00009
   cosine:
     max_lr: 0.0009 # [2.7e-3 * N_GPUS^2 x (BATCH_SIZE_GPU0/ 32) * 0.02 ] # 0.02 comes from this fact 0.1 (ResNet SGD LR)/0.002 (MIT ADAMW LR)
