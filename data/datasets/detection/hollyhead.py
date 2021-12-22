@@ -23,7 +23,7 @@ COCO_CLASS_LIST = ['head','not'
 
 
 @register_dataset(name="hollyhead", task="detection")
-class COCODetection(BaseImageDataset):
+class HollyHeadDetection(BaseImageDataset):
     """
         Dataset class for the COCO Object detection
 
@@ -39,9 +39,9 @@ class COCODetection(BaseImageDataset):
 
     """
     def __init__(self, opts, is_training: Optional[bool] = True, is_evaluation: Optional[bool] = False):
-        super(COCODetection, self).__init__(opts=opts, is_training=is_training, is_evaluation=is_evaluation)
+        super(HollyHeadDetection, self).__init__(opts=opts, is_training=is_training, is_evaluation=is_evaluation)
 
-        split = 'train' if is_training else 'val'
+        split = 'train' if is_training else 'test'
         year = 2017
         path = self.root
 
@@ -152,13 +152,13 @@ class COCODetection(BaseImageDataset):
         return image, ann_path
 
 
-@register_dataset(name="coco_ssd", task="detection")
-class COCODetectionSSD(COCODetection):
+@register_dataset(name="hollyhead_ssd", task="detection")
+class HollyHeadDetectionSSD(HollyHeadDetection):
     """
         Dataset class for the COCO Object detection using SSD
     """
     def __init__(self, opts, is_training: Optional[bool] = True, is_evaluation: Optional[bool] = False):
-        super(COCODetectionSSD, self).__init__(
+        super(HollyHeadDetectionSSD, self).__init__(
             opts=opts,
             is_training=is_training,
             is_evaluation=is_evaluation
