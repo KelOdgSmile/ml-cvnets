@@ -123,7 +123,8 @@ class HollyHeadDetection(BaseImageDataset):
         return len(self.ids)
 
     def _get_annotation(self, image_id):
-        ann_file = self.imgs[image_id].rstrip('.png')+'.txt'
+        ann_file = self.imgs[image_id][:-4]+'.txt'
+        print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
         txt_dat = np.loadtxt(ann_path,skiprows=1)
         if len(txt_dat.shape) > 1:
@@ -146,6 +147,7 @@ class HollyHeadDetection(BaseImageDataset):
 
     def _get_image(self, image_id):
         ann_file = self.imgs[image_id]
+        print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
 
         image = self.read_image(ann_path)
