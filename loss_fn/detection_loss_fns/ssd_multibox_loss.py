@@ -63,8 +63,8 @@ class SSDLoss(BaseCriteria):
         # predicted_locations :(batch_size, num_priors, 4)
         confidence, predicted_locations = prediction
 
-        print(confidence.shape, predicted_locations.shape)
-        print(target["box_labels"].shape, target["box_coordinates"].shape)
+        # print(confidence.shape, predicted_locations.shape)
+        # print(target["box_labels"].shape, target["box_coordinates"].shape)
 
         gt_labels = target["box_labels"]
         gt_locations = target["box_coordinates"]
@@ -81,12 +81,12 @@ class SSDLoss(BaseCriteria):
             target=gt_labels[mask],
             reduction="sum"
         )
-        print(classification_loss)
+        # print(classification_loss)
         pos_mask = gt_labels > 0
         predicted_locations = predicted_locations[pos_mask, :].view(-1, num_coordinates)
         gt_locations = gt_locations[pos_mask, :].view(-1, num_coordinates)
         smooth_l1_loss = F.smooth_l1_loss(predicted_locations, gt_locations, reduction="sum")
-        print(smooth_l1_loss)
+        # print(smooth_l1_loss)
         num_pos = gt_locations.shape[0]
 
         if self.curr_iter <= self.max_iter and self.training:
