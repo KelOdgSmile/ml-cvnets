@@ -153,7 +153,7 @@ class Trainer(object):
                 # prediction
                 pred_label = self.model(input_img)
                 # compute loss
-                print(pred_label[0].shape,pred_label[1].shape, target_label.shape)
+                # print(pred_label[0].shape,pred_label[1].shape, target_label.shape)
                 print(pred_label, target_label)
                 loss = self.criteria(input_sample=input_img, prediction=pred_label, target=target_label)
 
