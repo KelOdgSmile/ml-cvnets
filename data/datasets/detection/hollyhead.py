@@ -133,7 +133,7 @@ class HollyHeadDetection(BaseImageDataset):
         # print(txt_dat, txt_dat.shape)
         labels = txt_dat[:, 0]
         boxes = txt_dat[:, 1:]
-        labels = [[labels[i,:]] for i in range(labels.shape[0])]
+        labels = [[labels[i]] for i in range(labels.shape[0])]
         # print(labels, boxes)
         # print(txt_dat)
         # print(boxes[0, :].tolist()[0])
