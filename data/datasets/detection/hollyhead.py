@@ -127,16 +127,17 @@ class HollyHeadDetection(BaseImageDataset):
         print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
         txt_dat = np.loadtxt(ann_path,skiprows=1)
-        if len(txt_dat.shape) > 1:
-            labels = txt_dat[:, 0]
-            boxes = txt_dat[:, 1:]
-            boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist()) for i in range(boxes.shape[0])],
-                             np.float32).reshape((-1, 4))
+        if len(txt_dat.shape) >= 1:
+            txt_dat = np.expand_dims(txt_dat, axis=0)
+        labels = txt_dat[:, 0]
+        boxes = txt_dat[:, 1:]
+        boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist()) for i in range(boxes.shape[0])],
+                         np.float32).reshape((-1, 4))
 
-        else:
-            labels = txt_dat[0]
-            boxes = txt_dat[1:]
-            boxes = np.array(self._xywh2xyxy(boxes.tolist()))
+        # else:
+        #     labels = txt_dat[0]
+        #     boxes = txt_dat[1:]
+        #     boxes = np.array(self._xywh2xyxy(boxes.tolist()))
         # filter crowd annotations
 
         return boxes, np.array(labels)
