@@ -88,10 +88,10 @@ class HollyHeadDetection(BaseImageDataset):
         image_id = self.ids[img_index]
 
         image, img_name = self._get_image(image_id=image_id)
-        img_size = image.shape
-        boxes, labels = self._get_annotation(image_id=image_id, img_size=img_size)
-
         im_height, im_width = image.shape[:2]
+
+        boxes, labels = self._get_annotation(image_id=image_id, img_size=[im_height, im_width,0])
+
 
         data = {
             "image": image,
@@ -260,8 +260,10 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
 
         image_id = self.ids[img_index]
 
-        image, img_fname = self._get_image(image_id=image_id)
-        boxes, labels = self._get_annotation(image_id=image_id)
+        image, img_name = self._get_image(image_id=image_id)
+        im_height, im_width = image.shape[:2]
+
+        boxes, labels = self._get_annotation(image_id=image_id, img_size=[im_height, im_width, 0])
 
         data = {
             "image": image,
