@@ -88,7 +88,8 @@ class HollyHeadDetection(BaseImageDataset):
         image_id = self.ids[img_index]
 
         image, img_name = self._get_image(image_id=image_id)
-        boxes, labels = self._get_annotation(image_id=image_id)
+        img_size = image.shape
+        boxes, labels = self._get_annotation(image_id=image_id, img_size=img_size)
 
         im_height, im_width = image.shape[:2]
 
@@ -122,7 +123,8 @@ class HollyHeadDetection(BaseImageDataset):
     def __len__(self):
         return len(self.ids)
 
-    def _get_annotation(self, image_id):
+    def _get_annotation(self, image_id, img_size):
+        h, w, _ = img_size
         ann_file = self.imgs[image_id][:-4]+'.txt'
         # print(ann_file)
         ann_path = os.path.join(self.ann_dir, ann_file)
@@ -138,7 +140,7 @@ class HollyHeadDetection(BaseImageDataset):
         # print(txt_dat)
         # print(boxes[0, :].tolist()[0])
         # print(self._xywh2xyxy(boxes[0, :].tolist()))
-        boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist()) for i in range(boxes.shape[0])],
+        boxes = np.array([self._xywh2xyxy(boxes[i, :].tolist(), h, w) for i in range(boxes.shape[0])],
                          np.float32).reshape((-1, 4))
 
         # else:
@@ -146,13 +148,12 @@ class HollyHeadDetection(BaseImageDataset):
         #     boxes = txt_dat[1:]
         #     boxes = np.array(self._xywh2xyxy(boxes.tolist()))
         # filter crowd annotations
+        return boxes, np.array(labels, np.int64).reshape((-1,))
 
-        return boxes, np.array(labels,np.int64).reshape((-1,))
-
-    def _xywh2xyxy(self, box):
+    def _xywh2xyxy(self, box, img_h=1, img_w=1):
         # print(box)
         x1, y1, w, h = box
-        return [x1, y1, x1 + w, y1 + h]
+        return [(x1-w/2)*img_w, (y1-h/2)*img_h, (x1 + w/2)*img_w, (y1 + h/2)*img_h]
 
     def _get_image(self, image_id):
         ann_file = self.imgs[image_id]
