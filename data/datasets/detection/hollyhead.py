@@ -260,6 +260,7 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         image_id = self.ids[img_index]
 
         image, img_name = self._get_image(image_id=image_id)
+        print(image.shape)
         im_height, im_width = image.shape[:2]
 
         boxes, labels = self._get_annotation(image_id=image_id, img_size=[im_height, im_width, 0])
