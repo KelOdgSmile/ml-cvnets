@@ -289,7 +289,7 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             print(im_width, im_height)
             print(vals)
             plt.vlines(vals[0] , vals[1] , vals[3] , color='r')
-
+        plt.savefig('Images/image'+str(image_id)+'.png')
         return {
             "image": data["image"],
             "label": {
