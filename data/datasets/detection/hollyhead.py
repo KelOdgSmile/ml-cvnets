@@ -281,8 +281,8 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         )
         plt.figure()
         plt.imshow(data["image"].permute(1,2,0))
-        plt.show()
-        # print(data["image"].max(), gt_labels, gt_coordinates)
+        plt.savefig('Images/TestImage'+str(image_id)+'.png')
+        print(gt_labels.max(), gt_coordinates)
         return {
             "image": data["image"],
             "label": {
