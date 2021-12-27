@@ -9,7 +9,7 @@ import os
 from typing import Optional, Tuple, Dict
 import numpy as np
 import math
-
+import matplotlib.pyplot as plt
 from utils import logger
 from cvnets.misc.anchor_generator import SSDAnchorGenerator
 from cvnets.misc.match_prior import SSDMatcher
@@ -279,6 +279,9 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             gt_labels=data["box_labels"],
             reference_boxes_ctr=anchors
         )
+        plt.figure()
+        plt.imshow(data["image"].permute(1,2,0))
+        plt.show()
         # print(data["image"].max(), gt_labels, gt_coordinates)
         return {
             "image": data["image"],
