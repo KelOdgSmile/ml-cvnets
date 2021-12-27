@@ -291,6 +291,9 @@ def main_detection_evaluation(**kwargs):
         # replace model specific datasets (e.g., coco_ssd) with general COCO dataset
         setattr(opts, "dataset.name", "coco")
 
+    if dataset_name.find("hollyhead")>-1:
+        setattr(opts, "dataset.name","hollyhead")
+
     # device set-up
     opts = device_setup(opts)
 

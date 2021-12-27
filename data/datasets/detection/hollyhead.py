@@ -279,7 +279,7 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             gt_labels=data["box_labels"],
             reference_boxes_ctr=anchors
         )
-        print(data["image"].max(), gt_labels, gt_coordinates)
+        # print(data["image"].max(), gt_labels, gt_coordinates)
         return {
             "image": data["image"],
             "label": {
