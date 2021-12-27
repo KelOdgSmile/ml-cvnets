@@ -135,8 +135,8 @@ class HollyHeadDetection(BaseImageDataset):
         # print(txt_dat, txt_dat.shape)
         labels = txt_dat[:, 0]
         boxes = txt_dat[:, 1:]
-        labels = [[labels[i]+1] for i in range(labels.shape[0])]
-        # print(labels, boxes)
+        labels = [[labels[i]+2] for i in range(labels.shape[0])]
+        print(labels, boxes)
         # print(txt_dat)
         # print(boxes[0, :].tolist()[0])
         # print(self._xywh2xyxy(boxes[0, :].tolist()))
@@ -262,6 +262,7 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
 
         image, img_name = self._get_image(image_id=image_id)
         im_height, im_width = image.shape[:2]
+        print(np.max(np.max(image)))
 
         boxes, labels = self._get_annotation(image_id=image_id, img_size=[im_height, im_width, 0])
 
