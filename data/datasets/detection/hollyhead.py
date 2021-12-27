@@ -287,8 +287,8 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         for i in range(gt_coordinates.shape[0]):
             vals = gt_coordinates[i, :]
             print(im_width, im_height)
-            print(vals[0] * im_width, vals[1] * im_height, vals[2] * im_width, vals[3] * im_height)
-            plt.vlines(vals[0] * im_width, vals[1] * im_height, vals[3] * im_height, color='r')
+            print(vals)
+            plt.vlines(vals[0] , vals[1] , vals[3] , color='r')
 
         return {
             "image": data["image"],
