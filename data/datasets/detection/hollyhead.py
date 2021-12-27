@@ -271,7 +271,7 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         }
         data = transform_fn(data)
 
-        im_height, im_width = data['image'].shape[:2]
+        im_height, im_width = data['image'].shape[1:]
 
         plt.figure()
         plt.imshow(data["image"].permute(1,2,0))
