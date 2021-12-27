@@ -277,8 +277,8 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         plt.imshow(data["image"].permute(1,2,0))
         for i in range(data['box_coordinates'].shape[0]):
             vals = data['box_coordinates'][i,:]
-            print(vals)
-            plt.vlines(vals[0]*im_width,vals[1]*im_height, vals[3]*im_height)
+            print(vals[0]*im_width, vals[1]*im_height, vals[2]*im_width, vals[3]*im_height)
+            plt.vlines(vals[0]*im_width,vals[1]*im_height, vals[3]*im_height, color = 'r')
         plt.savefig('Images/TestImage'+str(image_id)+'.png')
 
         print(data['box_labels'].max(), data['box_coordinates'])
