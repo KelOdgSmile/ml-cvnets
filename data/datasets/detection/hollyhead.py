@@ -260,7 +260,6 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         image_id = self.ids[img_index]
 
         image, img_name = self._get_image(image_id=image_id)
-        print(image.shape)
         im_height, im_width = image.shape[:2]
 
         boxes, labels = self._get_annotation(image_id=image_id, img_size=[im_height, im_width, 0])
@@ -271,9 +270,15 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             "box_coordinates": boxes
         }
         data = transform_fn(data)
+
+        im_height, im_width = data['image'].shape[:2]
+
         plt.figure()
         plt.imshow(data["image"].permute(1,2,0))
         plt.savefig('Images/TestImage'+str(image_id)+'.png')
+        for i in range(data['box_coordinates'].shape[0]):
+            vals = data['box_coordinates'][i,:]
+            plt.vlines(vals[0]*im_width,vals[1]*im_height, vals[3]*im_height)
         print(data['box_labels'].max(), data['box_coordinates'])
         # convert to priors
         anchors = self.get_anchors(crop_size_h=crop_size_h, crop_size_w=crop_size_w)
