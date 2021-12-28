@@ -282,14 +282,14 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             gt_labels=data["box_labels"],
             reference_boxes_ctr=anchors
         )
-        plt.figure()
-        plt.imshow(data["image"].permute(1, 2, 0))
-        for i in range(gt_coordinates.shape[0]):
-            vals = gt_coordinates[i, :]
-            print(im_width, im_height)
-            print(vals)
-            plt.vlines(vals[0] , vals[1] , vals[3] , color='r')
-        plt.savefig('Images/image'+str(image_id)+'.png')
+        # plt.figure()
+        # plt.imshow(data["image"].permute(1, 2, 0))
+        # for i in range(gt_coordinates.shape[0]):
+        #     vals = gt_coordinates[i, :]
+        #     # print(im_width, im_height)
+        #     # print(vals)
+        #     plt.vlines(vals[0] , vals[1] , vals[3] , color='r')
+        # plt.savefig('Images/image'+str(image_id)+'.png')
         return {
             "image": data["image"],
             "label": {
