@@ -70,7 +70,7 @@ model:
       name: "swish"
     pretrained: "https://docs-assets.developer.apple.com/ml-research/models/cvnets/classification/mobilevit_s.pt"
   normalization:
-    name: "sync_batch_norm"
+    name: "batch_norm"
     momentum: 0.1
   activation:
     name: "relu" # If specific activation function is not specified, this one will be used as a default

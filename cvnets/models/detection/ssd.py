@@ -123,6 +123,18 @@ class SingleShotDetector(BaseDetection):
 
         self.anchors_aspect_ratio = anchors_aspect_ratio
         self.output_strides = output_strides
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.encoder.to(device)
+        for item in self.ssd_heads:
+            item.to(device)
+        for os, ssd_head in zip(self.output_strides, self.ssd_heads):
+            if os not in [8,16,32]:
+                self.extra_layers["os_{}".format(os)].to(device)
+
+
+        self.eval()
+        self.priors_cxcy = self.get_priors_cxcy(torch.rand((1,3,320,320)).to(device))
+        self.train(True)
 
     @staticmethod
     def reset_layers(module):
@@ -180,6 +192,39 @@ class SingleShotDetector(BaseDetection):
         group.add_argument('--model.detection.ssd.nms-iou-threshold', type=float, default=0.3,
                            help="NMS IoU threshold ")
         return parser
+
+
+    def get_priors_cxcy(self, x:Tensor):
+
+        enc_end_points: Dict = self.encoder.extract_end_points_all(x)
+
+
+
+        anchors = [] 
+
+        x = enc_end_points["out_l5"]
+        for os, ssd_head in zip(self.output_strides, self.ssd_heads):
+            if os == 8:
+                fm_h, fm_w = enc_end_points["out_l3"].shape[2:]
+            elif os == 16:
+                fm_h, fm_w = enc_end_points["out_l4"].shape[2:]
+            elif os == 32:
+                fm_h, fm_w = enc_end_points["out_l5"].shape[2:]
+            else: # for all other feature maps with os > 32
+                x = self.extra_layers["os_{}".format(os)](x)
+                fm_h, fm_w = x.shape[2:]
+
+            if anchors is not None:
+                # anchors in center form
+                anchors_fm_ctr = self.anchor_box_generator(
+                    fm_height=fm_h,
+                    fm_width=fm_w,
+                    fm_output_stride=os
+                )
+                anchors.append(anchors_fm_ctr)
+
+        return anchors
+
 
     def ssd_forward(self, x: Tensor, *args, **kwargs) -> Union[Tuple[Tensor, Tensor, Tensor], Tuple[Tensor, Tensor]]:
         enc_end_points: Dict = self.encoder.extract_end_points_all(x)
