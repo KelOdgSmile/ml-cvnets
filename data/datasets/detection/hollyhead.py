@@ -169,6 +169,8 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         Dataset class for the COCO Object detection using SSD
     """
     def __init__(self, opts, is_training: Optional[bool] = True, is_evaluation: Optional[bool] = False):
+        print('HollyHead')
+        print('=====')
         super(HollyHeadDetectionSSD, self).__init__(
             opts=opts,
             is_training=is_training,

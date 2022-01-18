@@ -100,7 +100,10 @@ def std_cls_model_args(parser: argparse.ArgumentParser) -> argparse.ArgumentPars
     group.add_argument('--ddp.world-size', type=int, default=1, help="World size for DDP")
     group.add_argument('--ddp.dist-url', type=str, default=None, help="DDP URL")
     group.add_argument('--ddp.dist-port', type=int, default=6006, help="DDP Port")
-
+    group.add_argument('--dataset.name', default='hollyhead_ssd')
+    group.add_argument('--dataset.category', default = 'detection')
+    group.add_argument('--dataset.root_train',default = '.')
+    group.add_argument('--dataset.root_val',default = '.')
     return group
 
 
@@ -135,7 +138,7 @@ print('Got Passed Functions')
 if __name__ == '__main__':
     sys.path.insert(0,'.')
     print('here')
-    model = generate_model('config/detection/ssd_mobilevit_small_320.yaml')
+    model = generate_model('config/detection/ssd_mobilevit_small_hollyhead.yaml')
     device = ('cuda:0' if torch.cuda.is_available() else 'cpu')
     out = model(torch.rand(1,3,320,320).to(device))
     print(out[0].shape,out[1].shape)
