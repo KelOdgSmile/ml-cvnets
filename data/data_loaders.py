@@ -63,19 +63,20 @@ def create_train_val_loader(opts):
     data_workers = getattr(opts, "dataset.workers", 1)
     persistent_workers = getattr(opts, "dataset.persistent_workers", False) and (data_workers > 0)
     pin_memory = getattr(opts, "dataset.pin_memory", False)
+    bsize = getattr(opts, 'datasets.train_batch_size0',8)
 
     train_loader = DataLoader(dataset=train_dataset,
-                              batch_size=1,  # Handled inside data sampler
-                              num_workers=data_workers,
+                              batch_size=bsize,  # Handled inside data sampler
+                              num_workers=1,
                               pin_memory=pin_memory,
-                              batch_sampler=train_sampler,
+                              #batch_sampler=train_sampler,
                               persistent_workers=persistent_workers
                               )
 
     val_loader = DataLoader(dataset=valid_dataset,
-                            batch_size=1,
-                            batch_sampler=valid_sampler,
-                            num_workers=data_workers,
+                            batch_size=bsize,
+                            #batch_sampler=valid_sampler,
+                            num_workers=1,
                             pin_memory=pin_memory,
                             persistent_workers=persistent_workers
                             )
@@ -88,3 +89,4 @@ def create_train_val_loader(opts):
         logger.log("Number of data workers: {}".format(data_workers))
 
     return train_loader, val_loader, train_sampler
+

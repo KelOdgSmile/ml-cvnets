@@ -74,7 +74,9 @@ def train_val_datasets(opts):
 
     name_dataset_task = dataset_name + "_" + dataset_category
     train_dataset = valid_dataset = None
+    print(DATASET_REGISTRY)
     if name_dataset_task in DATASET_REGISTRY:
+        print(name_dataset_task)
         train_dataset = DATASET_REGISTRY[name_dataset_task](opts=opts, is_training=True)
         valid_dataset = DATASET_REGISTRY[name_dataset_task](opts=opts, is_training=False)
     else:

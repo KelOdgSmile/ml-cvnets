@@ -41,21 +41,22 @@ class HollyHeadDetection(BaseImageDataset):
     def __init__(self, opts, is_training: Optional[bool] = True, is_evaluation: Optional[bool] = False):
         super(HollyHeadDetection, self).__init__(opts=opts, is_training=is_training, is_evaluation=is_evaluation)
 
-        split = 'train' if is_training else 'test'
-        year = 2017
+        split = 'test' if is_training else 'train'
         path = self.root
 
         img_path = os.path.join(os.path.join(path, 'images'), split)
         label_path = os.path.join(os.path.join(path, 'labels'), split)
-
+        print(img_path)
         self.imgs = [item for item in os.listdir(img_path) if os.path.isfile(os.path.join(img_path, item))]
-
+        print(self.imgs)
+        print(len(self.imgs))
 
         self.img_dir = img_path
         self.ann_dir = label_path
-        self.ids = [i for i in range(len(self.img_dir))]
+        self.ids = [i for i in range(len(self.imgs))]
 
         self.num_classes = 2
+        self.n_classes = 2
 
         setattr(opts, "model.detection.n_classes", self.num_classes)
 
@@ -75,9 +76,11 @@ class HollyHeadDetection(BaseImageDataset):
         aug_list.append(tf.NumpyToTensor(opts=self.opts))
         return tf.Compose(opts=self.opts, img_transforms=aug_list)
 
-    def __getitem__(self, batch_indexes_tup: Tuple) -> Dict:
-        crop_size_h, crop_size_w, img_index = batch_indexes_tup
-
+    #def __getitem__(self, batch_indexes_tup: Tuple) -> Dict:
+    #    crop_size_h, crop_size_w, img_index = batch_indexes_tup
+    def __getitem__(self, idx: int) -> Dict:
+        crop_size_h = 320
+        crop_size_w = 310
         if self.is_training:
             transform_fn = self.training_transforms(size=(crop_size_h, crop_size_w))
         elif self.is_evaluation:
@@ -85,7 +88,7 @@ class HollyHeadDetection(BaseImageDataset):
         else: # same for validation and evaluation
             transform_fn = self.validation_transforms(size=(crop_size_h, crop_size_w))
 
-        image_id = self.ids[img_index]
+        image_id = self.ids[idx]
 
         image, img_name = self._get_image(image_id=image_id)
         im_height, im_width = image.shape[:2]
@@ -251,15 +254,19 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
         anchors = torch.cat(anchors, dim=0)
         return anchors
 
-    def __getitem__(self, batch_indexes_tup: Tuple) -> Dict:
-        crop_size_h, crop_size_w, img_index = batch_indexes_tup
+#    def __getitem__(self, batch_indexes_tup: Tuple) -> Dict:
+#        crop_size_h, crop_size_w, img_index = batch_indexes_tup
 
+    def __getitem__(self, idx: int) -> Dict:
+        crop_size_h = 320
+        crop_size_w = 310
+        #print(crop_size_h,crop_size_w)
         if self.is_training:
             transform_fn = self.training_transforms(size=(crop_size_h, crop_size_w))
         else: # same for validation and evaluation
             transform_fn = self.validation_transforms(size=(crop_size_h, crop_size_w))
 
-        image_id = self.ids[img_index]
+        image_id = self.ids[idx]
 
         image, img_name = self._get_image(image_id=image_id)
         im_height, im_width = image.shape[:2]

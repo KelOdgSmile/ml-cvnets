@@ -6,14 +6,14 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/content/Data/dataset"
-  root_val: "/content/Data/dataset"
+  root_train: "/home/kelly/Data/dataset"
+  root_val: "/home/kelly/Data/dataset"
   name: "hollyhead_ssd"
   category: "detection"
-  train_batch_size0: 32
-  val_batch_size0: 32
+  train_batch_size0: 16
+  val_batch_size0: 16
   eval_batch_size0: 1
-  workers: 2
+  workers: 1
   persistent_workers: false
   pin_memory: true
 sampler:
@@ -26,7 +26,7 @@ loss:
   detection:
     name: "ssd_multibox_loss"
     ssd_multibox_loss:
-      neg_pos_ratio: 3
+      neg_pos_ratio: 2
 optim:
   name: "adamw"
   weight_decay: 0.01
@@ -69,7 +69,7 @@ model:
       name: "swish"
     pretrained: "https://docs-assets.developer.apple.com/ml-research/models/cvnets/classification/mobilevit_xxs.pt"
   normalization:
-    name: "sync_batch_norm"
+    name: "batch_norm"
     momentum: 0.1
   activation:
     name: "relu" # If specific activation function is not specified, this one will be used as a default

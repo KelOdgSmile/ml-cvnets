@@ -275,6 +275,7 @@ class SingleShotDetector(BaseDetection):
 
     def forward(self, x: Tensor) -> Union[Tuple[Tensor, Tensor, Tensor], Tuple[Tensor, Tensor]]:
         return self.ssd_forward(x=x)
+    
 
     def predict(self, x: Tensor, *args, **kwargs):
         bsz, channels, width, height = x.shape

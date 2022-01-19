@@ -118,8 +118,9 @@ def load_config_file(opts, opts_file):
         # flat_cfg = {'--'+key:flat_cfg[key] for key in flat_cfg.keys()}
         for k, v in flat_cfg.items():
             print(k, v, hasattr(opts, k))
-            if hasattr(opts, k):
-                setattr(opts, k, v)
+            #if hasattr(opts, k):
+            setattr(opts, k, v)
+                
     return opts
 
 
