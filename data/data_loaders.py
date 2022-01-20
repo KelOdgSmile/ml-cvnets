@@ -68,17 +68,15 @@ def create_train_val_loader(opts):
     train_loader = DataLoader(dataset=train_dataset,
                               batch_size=bsize,  # Handled inside data sampler
                               num_workers=1,
-                              pin_memory=pin_memory,
+                            #  pin_memory=pin_memory,
                               #batch_sampler=train_sampler,
-                              persistent_workers=persistent_workers
                               )
 
     val_loader = DataLoader(dataset=valid_dataset,
                             batch_size=bsize,
                             #batch_sampler=valid_sampler,
                             num_workers=1,
-                            pin_memory=pin_memory,
-                            persistent_workers=persistent_workers
+                            #pin_memory=pin_memory,
                             )
 
     if is_master_node:
