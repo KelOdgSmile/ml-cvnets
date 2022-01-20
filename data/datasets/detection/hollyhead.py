@@ -80,7 +80,7 @@ class HollyHeadDetection(BaseImageDataset):
     #    crop_size_h, crop_size_w, img_index = batch_indexes_tup
     def __getitem__(self, idx: int) -> Dict:
         crop_size_h = 320
-        crop_size_w = 310
+        crop_size_w = 320
         if self.is_training:
             transform_fn = self.training_transforms(size=(crop_size_h, crop_size_w))
         elif self.is_evaluation:
