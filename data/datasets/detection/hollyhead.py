@@ -48,7 +48,7 @@ class HollyHeadDetection(BaseImageDataset):
         label_path = os.path.join(os.path.join(path, 'labels'), split)
         print(img_path)
         self.imgs = [item for item in os.listdir(img_path) if os.path.isfile(os.path.join(img_path, item))]
-        print(self.imgs)
+        #print(self.imgs)
         print(len(self.imgs))
 
         self.img_dir = img_path
@@ -124,7 +124,7 @@ class HollyHeadDetection(BaseImageDataset):
         return new_data
 
     def __len__(self):
-        return len(self.ids)
+        return len(self.imgs)
 
     def _get_annotation(self, image_id, img_size):
         h, w, _ = img_size
@@ -161,7 +161,6 @@ class HollyHeadDetection(BaseImageDataset):
         ann_file = self.imgs[image_id]
         # print(ann_file)
         ann_path = os.path.join(self.img_dir, ann_file)
-
         image = self.read_image(ann_path)
         return image, ann_path
 
@@ -179,7 +178,6 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             is_training=is_training,
             is_evaluation=is_evaluation
         )
-
         anchors_aspect_ratio = getattr(opts, "model.detection.ssd.anchors_aspect_ratio", [[2, 3], [2, 3], [2]])
         output_strides = getattr(opts, "model.detection.ssd.output_strides", [8, 16, 32])
 
@@ -210,6 +208,26 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             size_variance=getattr(opts, "model.detection.ssd.size_variance", 0.2),
             iou_threshold=getattr(opts, "model.detection.ssd.iou_threshold", 0.5) # we use nms_iou_threshold during inference
         )
+
+        self.validate_dataset()
+    def __len__(self):
+        return len(self.imgs)
+
+    def validate_dataset(self):
+#        for image_id in self.imgs
+        bad = []
+        for image_id in range(len(self.imgs)):
+            try:
+                image, img_name = self.__getitem__(idx=image_id)
+            except:
+                bad.append(image_id)
+        if len(bad) >0:
+            for i,item in enumerate(bad):
+                del self.imgs[item-i]
+
+
+
+
 
     def training_transforms(self, size: tuple, ignore_idx: Optional[int] = 255):
         aug_list = [
@@ -259,14 +277,14 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
 
     def __getitem__(self, idx: int) -> Dict:
         crop_size_h = 320
-        crop_size_w = 310
+        crop_size_w = 320
         #print(crop_size_h,crop_size_w)
         if self.is_training:
             transform_fn = self.training_transforms(size=(crop_size_h, crop_size_w))
         else: # same for validation and evaluation
             transform_fn = self.validation_transforms(size=(crop_size_h, crop_size_w))
 
-        image_id = self.ids[idx]
+        image_id = idx 
 
         image, img_name = self._get_image(image_id=image_id)
         im_height, im_width = image.shape[:2]
