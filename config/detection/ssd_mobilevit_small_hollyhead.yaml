@@ -6,8 +6,8 @@ common:
   auto_resume: true
   mixed_precision: true
 dataset:
-  root_train: "/home/kelly/Data/dataset"
-  root_val: "/home/kelly/Data/dataset"
+  root_train: "/content/Data/dataset"
+  root_val: "/content/Data/dataset"
   name: "hollyhead_ssd"
   category: "detection"
   train_batch_size0: 32

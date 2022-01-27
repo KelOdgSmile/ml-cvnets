@@ -4,7 +4,7 @@
 #
 
 import torch
-from pycocotools.coco import COCO
+import albumentations as A
 import os
 from typing import Optional, Tuple, Dict
 import numpy as np
@@ -239,8 +239,17 @@ class HollyHeadDetectionSSD(HollyHeadDetection):
             tf.Resize(opts=self.opts, size=size),
             tf.NumpyToTensor(opts=self.opts)
         ]
-
-        return tf.Compose(opts=self.opts, img_transforms=aug_list)
+        transform = A.Compose([
+                A.Blur(p=0.01),
+                A.MedianBlur(p=0.01),
+                A.ToGray(p=0.01),
+                A.CLAHE(p=0.01),
+                A.RandomBrightnessContrast(p=0.0),
+                A.RandomGamma(p=0.0),
+                A.ImageCompression(quality_lower=75, p=0.0)],
+                bbox_params=A.BboxParams(format='pascal_voc', label_fields=['class_labels']))
+        return transform
+        # return tf.Compose(opts=self.opts, img_transforms=aug_list)
 
     def validation_transforms(self, size: tuple, *args, **kwargs):
         aug_list = [
